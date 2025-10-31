@@ -1,5 +1,6 @@
 import { asyncHandler, ErrorResponse } from "../util/index.js"; // util
 import {
+  CollegesModel,
   PersonModel,
   StudentModel,
   StaffModel,
@@ -8,10 +9,12 @@ import {
 } from "../models/index.js"; // model
 
 const register = asyncHandler(async (req, res, next) => {
-  let body = req.body,
-    user;
+  let body = req.body,user;
   body["hash_password"] = body.password;
   delete body["password"];
+
+  let hasCollege = await CollegesModel.findOne({_id:body.college_id, isAuthorized:true});
+  if (!hasCollege) throw new ErrorResponse(400, "College Not Found");
 
   let isUserExist = await PersonModel.findOne({ email: body?.email });
   if (isUserExist) throw new ErrorResponse(400, "User already exists");
@@ -20,16 +23,15 @@ const register = asyncHandler(async (req, res, next) => {
   if (!isRoleExist) throw new ErrorResponse(400, "Invalid role assign");
 
   let role = String(isRoleExist.role_name).toLowerCase();
-  if (role == "admin") {
+  if (role === "admin") {
     user = await PersonModel.create(body);
-  } else if (role == "student") {
+  } else if (role === "student") {
     user = await StudentModel.create(body);
-  } else if (role == "staff") {
+  } else if (role === "staff") {
     user = await StaffModel.create(body);
-  } else if (role == "faculty") {
+  } else if (role === "faculty") {
     user = await FacultyModel.create(body);
   }
-
   return res.status(201).json({
     success: true,
     message: "User registered successfully",

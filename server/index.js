@@ -3,8 +3,9 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import connectDatabase from "./config/dbConnect.js";
 import cors from "cors";
-import { authRoute, courseRoute, departmentRoute, permissionRoute } from "./routes/index.js";
+import {collegeRoute, authRoute, courseRoute, departmentRoute, permissionRoute } from "./routes/index.js";
 import { errorHandler } from "./middlewares/index.js";
+import {seedSuperAdmin, preDBEntries} from "./util/index.js";
 
 dotenv.config();
 const app = express();
@@ -19,12 +20,14 @@ app.use(cors({
 
 // Database Connection Function Call
 await connectDatabase();
+await preDBEntries(); // pre database Entries
+await seedSuperAdmin(); // create super user
 
 app.get("/get", (req, res) => {
   res.status(200).json("wokring good");
 });
-
 //endpoint
+app.use("/api/v1/college",collegeRoute);
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/course", courseRoute);
 app.use("/api/v1/department", departmentRoute);

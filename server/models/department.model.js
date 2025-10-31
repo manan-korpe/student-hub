@@ -1,18 +1,22 @@
 import mongoose from "mongoose";
 
 const departmentSchema = new mongoose.Schema({
-    code:{
-        type:String,
-        required:true
+    college_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "colleges",
     },
-    name:{
-        type:String,
-        required:true
+    head_of_department: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
     },
-    head_of_department:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"User",
+    code: {
+        type: String,
+        required: true
+    },
+    name: {
+        type: String,
+        required: true
     }
 });
 
-export default mongoose.model("Departments",departmentSchema);
+export default mongoose.model("Departments", departmentSchema);

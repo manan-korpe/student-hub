@@ -5,7 +5,7 @@ const tableSchema = new mongoose.Schema(
     table_name: {
       type: String,
       required: true,
-    },
+    }
   },
   { timestamps: true }
 );
@@ -13,9 +13,13 @@ const tableSchema = new mongoose.Schema(
 const roleSchema = new mongoose.Schema(
   {
     role_name: {
-        type: String,
-        required: true,
-      },
+      type: String,
+      required: true,
+    },
+    college_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "colleges",
+    }
   },
   { timestamps: true }
 );
@@ -31,6 +35,10 @@ const permissionSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Tables",
       required: true,
+    },
+    college_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "colleges",
     },
     can_read: {
       type: Boolean,
@@ -53,7 +61,7 @@ const Roles = mongoose.model("Roles", roleSchema);
 const Permissions = mongoose.model("Permissions", permissionSchema);
 
 export {
-    Tables,
-    Roles,
-    Permissions
+  Tables,
+  Roles,
+  Permissions
 }

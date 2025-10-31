@@ -1,3 +1,4 @@
+import CollegesModel from "./college.model.js";
 import AddressModel from "./address.model.js";
 import DepartmentModel from "./department.model.js";
 import CourseMode from "./course.model.js";
@@ -16,6 +17,7 @@ import {
 
 
 export {
+  CollegesModel,
   AddressModel,
   DepartmentModel,
   CourseMode,

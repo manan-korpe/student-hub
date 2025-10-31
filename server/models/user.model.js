@@ -26,6 +26,10 @@ const personSchema = new mongoose.Schema(
       ref: "Roles",
       required: true,
     },
+    college_id:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "colleges",
+    },
     email: {
       type: String,
       required: true,
@@ -42,11 +46,9 @@ const personSchema = new mongoose.Schema(
     },
     middle_name: {
       type: String,
-      required: true,
     },
     last_name: {
       type: String,
-      required: true,
     },
     gender: {
       type: String,
@@ -186,6 +188,8 @@ personSchema.methods.createJWT = function () {
     {
       id: this._id,
       email: this.email,
+      college_id:this.college_id,
+      role_id:this.role_id
     },
     process.env.JWT_SECRET,
     {
